@@ -1,0 +1,10 @@
+loglevel = "debug"
+workers = "4"
+timeout = "580"
+bind = "0.0.0.0:5568"
+keepalive = 580
+wsgi_app = "main:app"
+errorlog = "error_file"
+accesslog = "ipv_logs"
+capture_output = True
+worker_class = "egg:meinheld#gunicorn_worker"

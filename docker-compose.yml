@@ -1,0 +1,55 @@
+version: '3'
+services:
+    ipv_backend:
+        image: 740186269845.dkr.ecr.ap-south-1.amazonaws.com/kwikid_ipv:rbl-ipv-backend-uat-v0.0.5
+        network_mode: "host"
+        ports:
+                - "5557:5557"
+        volumes:
+            - ipv_api:/usr/kwikid_poc_ipv_backend
+
+    app_backend:
+        image: 740186269845.dkr.ecr.ap-south-1.amazonaws.com/kwikid_apk_rbl:rbl-apk-backend-uat-v0.0.3
+        network_mode: "host"
+        ports:
+                - "5555:5555"
+        volumes:
+            - apk_api:/usr/kwikid_poc_apk_backend
+
+    admin_portal:
+        image: 740186269845.dkr.ecr.ap-south-1.amazonaws.com/kwikid_admin_portal:rbl-admin-backend-uat-v0.0.4
+        network_mode: "host"
+        ports:
+                - "5558:5558"
+        volumes:
+            - admin_portal_api:/usr/admin-portal-backend
+
+    celery:
+        image: 740186269845.dkr.ecr.ap-south-1.amazonaws.com/kwikid_celery:rbl-celery-backend-uat-v0.1.1
+        network_mode: "host"
+        depends_on:
+                -  "redis"
+        volumes:
+            - ipv_api:/usr/kwikid_poc_ipv_backend
+
+    scheduling:
+        image: 740186269845.dkr.ecr.ap-south-1.amazonaws.com/kwikid_scheduling:rbl-scheduling-backend-uat-v0.0.2
+        network_mode: "host"
+        ports:
+              -  "5559:5559"
+        volumes:
+            - scheduling_api:/usr/vkyc_mod_schedule_backend
+
+    redis:
+        image: "740186269845.dkr.ecr.ap-south-1.amazonaws.com/kwikid-commons:redis"
+        network_mode: "host"
+        ports:
+                - "6378:6379"
+
+
+volumes:
+    ipv_api:
+    apk_api:
+    admin_portal_api:
+    scheduling_api:
+    saml_backend:
